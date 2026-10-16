@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-en="{{CALL}} – Belgian amateur radio station · {{REP_CALL}} repeater">{{CALL}} – Station radioamateur belge · Relais {{REP_CALL}}</title>
+<meta name="description" content="Site personnel de {{CALL}}, radioamateur belge, sysop du relais {{REP_CALL}} à {{REP_CITY}}.">
+<meta name="theme-color" content="#05070d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2305070d'/%3E%3Cpath d='M32 14v36M20 50h24M32 14l-8 16M32 14l8 16' stroke='%234da3ff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="canonical" href="{{SITE_URL}}">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fun.css">
+<link rel="stylesheet" href="illu.css">
+</head>
+<body>
+<a class="skip" href="#main" data-en="Skip to content">Aller au contenu</a>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>{{CALL}}</a>
+  <button class="langbtn langtop" type="button" data-setlang aria-label="English version" data-en-aria-label="Version française"><span class="lf">FR</span><span class="sep">/</span><span class="le">EN</span></button>
+  <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu" data-en-aria-label="Open menu">☰</button>
+  <nav id="menu" aria-label="Navigation principale" data-en-aria-label="Main navigation"><ul>
+    <li><a href="#apropos" data-en="About">À propos</a></li>
+    <li><a href="#station">Station</a></li>
+    <li><a href="#relais" data-en="{{REP_CALL}} repeater">Relais {{REP_CALL}}</a></li>
+    <li><a href="#outils" data-en="Tools">Outils</a></li>
+    <li><a href="#qsl">QSL</a></li>
+    <li><a href="#liens" data-en="Links">Liens</a></li>
+    <li><a href="#articles">Articles</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li class="langli"><button class="langbtn" type="button" data-setlang aria-label="English version" data-en-aria-label="Version française"><span class="lf">FR</span><span class="sep">/</span><span class="le">EN</span></button></li>
+    <li><a href="#soutenir" data-en="Support">Soutenir</a></li>
+  </ul></nav>
+</div></header>
+
+<div class="hero fun" id="top">
+  <canvas id="scope" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="rig" role="group" aria-label="Transceiver virtuel {{CALL}}" data-en-aria-label="{{CALL}} virtual transceiver">
+      <div class="rig-top">
+        <span class="rig-brand">{{CALL}} <em>· QRV · {{LOCATOR}}</em></span>
+        <span class="leds"><span class="led2 rx" id="ledrx" aria-hidden="true"></span><b>RX</b><span class="led2 tx" id="ledtx" aria-hidden="true"></span><b>TX</b></span>
+      </div>
+      <div class="rig-body">
+        <div class="smeter" aria-hidden="true">
+          <svg viewBox="0 0 200 120"><defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#4da3ff"/><stop offset=".7" stop-color="#00c2ff"/><stop offset="1" stop-color="#ff5468"/></linearGradient></defs>
+            <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="url(#sg)" stroke-width="6" stroke-linecap="round"/>
+            <g class="ticks" font-family="ui-monospace,monospace" font-size="10" fill="#9fb3d1" text-anchor="middle"><text x="22" y="86">1</text><text x="44" y="52">3</text><text x="75" y="32">5</text><text x="110" y="26">7</text><text x="142" y="36">9</text><text x="170" y="62">+20</text></g>
+            <line id="needle" x1="100" y1="100" x2="100" y2="28" stroke="#e6efff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="100" cy="100" r="6" fill="#4da3ff"/>
+          </svg>
+          <div class="smlabel">S-METER</div>
+        </div>
+        <div class="lcd" aria-live="polite">
+          <div class="lcd-row1"><span class="band" id="lcdband">20m</span><span class="mode">FM · USB</span></div>
+          <div class="lcd-freq" id="lcdfreq">14.200.00</div>
+          <div class="lcd-call">{{CALL}}</div>
+          <div class="lcd-ex" data-en="formerly {{EXCALL}}">ex-{{EXCALL}}</div>
+          <div class="lcd-msg" id="lcdmsg">…</div>
+          <a class="lcd-go" id="lcdgo" href="#qsl">→</a>
+          <div class="lcd-clocks">
+            <span>UTC <b id="utc">--:--:--</b></span>
+            <span><i data-en="BE">BE</i> <b id="local">--:--:--</b></span>
+            <span class="daynight" title="Position du soleil calculée pour {{LOCATOR}}" data-en-title="Sun position computed for {{LOCATOR}}"><b id="sunstate">…</b><span class="bar" aria-hidden="true"><i id="sunmark"></i></span><small id="suntimes"></small></span>
+          </div>
+        </div>
+        <div class="controls">
+          <div class="vfo" id="vfo" role="slider" tabindex="0" aria-label="Bouton VFO : tourner pour changer de bande" data-en-aria-label="VFO knob: turn to change band" aria-valuemin="0" aria-valuemax="7" aria-valuenow="3" aria-valuetext="20m">
+            <div class="vfo-dial" id="vfodial"><span class="dimple"></span></div>
+          </div>
+          <div class="vfo-hint small" data-en="Drag, scroll or ← → keys">Glissez, molette ou touches ← →</div>
+          <div class="rig-btns">
+            <button class="rigbtn ptt" id="ptt" type="button" aria-label="PTT : jouer CQ en Morse" data-en-aria-label="PTT: play CQ in Morse">PTT</button>
+            <button class="rigbtn" id="noise" type="button" aria-pressed="false" data-en="NOISE">BRUIT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btns" style="margin-top:26px">
+      <a class="btn" href="#contact" data-en="✉ Contact me">✉ Me contacter</a>
+      <a class="btn ghost" href="#relais" data-en="📡 The {{REP_CALL}} repeater">📡 Le relais {{REP_CALL}}</a>
+    </div>
+    <p class="small egg-hint" data-en="Psst… type <b>CQ</b> on your keyboard 😉">Psst… tapez <b>CQ</b> au clavier 😉</p>
+  </div>
+</div>
+
+<main id="main">
+<section id="apropos"><div class="wrap">
+  <h2 class="reveal"><span class="n">01 /</span><span data-en="About">À propos</span></h2>
+  <div class="grid">
+    <div class="glass card reveal">
+      <p data-en="Welcome to the page of <strong>{{CALL}}</strong> (formerly {{EXCALL}}), a licensed radio amateur in Belgium. Amateur radio is a technical and scientific hobby: experimenting with antennas and electronics, making contacts (QSOs) with other stations in Belgium and around the world, and taking part in the life of the radio community.">Bienvenue sur la page de <strong>{{CALL}}</strong> (anciennement {{EXCALL}}), radioamateur licencié en Belgique. Le radioamateurisme est un loisir technique et scientifique : expérimenter avec les antennes et l'électronique, établir des liaisons (QSO) avec d'autres stations en Belgique et à travers le monde, et participer à la vie de la communauté radio.</p>
+    </div>
+    <div class="glass card reveal">
+      <p data-en="I am also the <strong>sysop (technical manager) of the {{REP_CALL}} repeater</strong>, installed at the {{REP_SITE_EN}}. All licensed radio amateurs are welcome on it.">Je suis également <strong>sysop (responsable technique) du relais {{REP_CALL}}</strong>, installé à la {{REP_SITE_FR}}. Tous les radioamateurs licenciés y sont les bienvenus.</p>
+      <a class="btn sm ghost" href="#relais" data-en="See the repeater →">Voir le relais →</a>
+    </div>
+  </div>
+</div></section>
+
+<section id="station"><div class="wrap">
+  <h2 class="reveal"><span class="n">02 /</span><span data-en="Station &amp; bands">Station &amp; bandes</span></h2>
+  <p class="lead reveal" data-en="The station equipment. Filter by category:">Le matériel de la station. Filtrez par catégorie :</p>
+  <div class="illu-wrap reveal"><svg class="illu" viewBox="0 0 600 170" role="img" aria-label="Illustration : antenne end-fed de 20 m" data-en-aria-label="Illustration: 20 m end-fed antenna" data-parallax=".04">
+<path class="st2" d="M20 160H580"/>
+<path class="st" d="M70 160V60M60 160L70 60L80 160"/><path class="st" d="M520 160V40M512 160L520 40L528 160"/>
+<rect class="dim" x="56" y="70" width="28" height="18" rx="3"/><text class="lbl s" x="44" y="104">UNUN 49:1</text>
+<path class="st draw" style="--len:520" d="M84 74Q300 118 520 44"/>
+<path class="st2 flow" d="M70 160V96"/>
+<circle class="pkt pulse" cx="300" cy="97" r="4"/>
+<text class="lbl" x="250" y="140">END-FED · 20 m</text></svg></div>
+  <div class="filters reveal" role="group" aria-label="Filtrer l'équipement" data-en-aria-label="Filter equipment">
+    <button class="chip" data-f="all" aria-pressed="true" data-en="All">Tout</button>
+    <button class="chip" data-f="hf" aria-pressed="false">HF</button>
+    <button class="chip" data-f="vu" aria-pressed="false">VHF / UHF</button>
+    <button class="chip" data-f="mobile" aria-pressed="false">Mobile</button>
+    <button class="chip" data-f="portable" aria-pressed="false" data-en="Handhelds / QRP">Portatifs / QRP</button>
+    <button class="chip" data-f="num" aria-pressed="false" data-en="Digital">Numérique</button>
+  </div>
+  <div class="gear" id="gear">
+  </div>
+  <div class="facts reveal">
+    <div class="glass fact"><b data-en="Bands">Bandes</b><span data-en="HF, VHF and UHF">HF, VHF et UHF</span></div>
+    <div class="glass fact"><b>Modes</b><span data-en="FM and digital modes (C4FM, D-STAR, DMR)">FM et modes numériques (C4FM, D-STAR, DMR)</span></div>
+    <div class="glass fact"><b>Locator</b><span class="mono">{{LOCATOR}}</span></div>
+  </div>
+</div></section>
+
+<section id="relais"><div class="wrap">
+  <h2 class="reveal"><span class="n">03 /</span><span data-en="{{REP_CALL}} repeater">Relais {{REP_CALL}}</span></h2>
+  <p class="lead reveal" data-en="{{REP_CALL}} is a UHF amateur radio repeater installed at the <strong>{{REP_SITE_EN}}</strong>. I manage it as sysop. All licensed radio amateurs are welcome on the repeater.">{{REP_CALL}} est un relais radioamateur UHF installé à la <strong>{{REP_SITE_FR}}</strong>. J'en assure la gestion en tant que sysop. Tous les radioamateurs licenciés sont les bienvenus sur le relais.</p>
+  <div class="illu-wrap reveal" style="max-width:560px;margin-inline:auto"><svg class="illu" viewBox="0 0 520 260" role="img" aria-label="Illustration : pylône du relais {{REP_CALL}} émettant des ondes" data-en-aria-label="Illustration: {{REP_CALL}} repeater mast radiating waves">
+<g><circle class="ring" cx="260" cy="58" r="120"/><circle class="ring d1" cx="260" cy="58" r="120"/><circle class="ring d2" cx="260" cy="58" r="120"/></g>
+<path class="st draw" style="--len:1400" d="M260 40V250M236 250L260 70L284 250M241 210H279M246 170H274M251 130H269M240 230L274 190M280 230L246 190M245 170L270 130M275 170L250 130"/>
+<path class="st" d="M252 40h16M260 22v18"/><circle class="fc blink" cx="260" cy="20" r="4"/>
+<rect class="st2" x="292" y="214" width="66" height="36" rx="4"/><path class="st2" d="M300 214v-12h50v12M316 250v-16h18v16"/>
+<text class="lbl" x="300" y="200">{{REP_CITY}}</text><text class="lbl" x="150" y="120">{{REP_CALL}}</text><text class="lbl s" x="150" y="136">{{REP_OUT}} FM/C4FM</text>
+<path class="st2" d="M40 250H480"/></svg></div>
+  <div class="rep">
+    <div class="glass card reveal">
+      <div class="freqs">
+        <div class="freq"><small data-en="Output (listen RX)">Sortie (écoute RX)</small><div class="v">{{REP_OUT_FR}} <u>MHz</u></div><button class="copy" data-en="Copy" data-copy="{{REP_OUT}}">Copier</button></div>
+        <div class="freq"><small data-en="Input (transmit TX)">Entrée (émission TX)</small><div class="v">{{REP_IN_FR}} <u>MHz</u></div><button class="copy" data-en="Copy" data-copy="{{REP_IN}}">Copier</button></div>
+      </div>
+      <table class="specs">
+        <tr><th data-en="Callsign">Indicatif</th><td class="mono">{{REP_CALL}}</td></tr>
+        <tr><th>Shift</th><td class="mono" data-en="−7.6 MHz">−7,6 MHz</td></tr>
+        <tr><th>Mode</th><td class="mono" data-en="Dual mode: analog FM (12K0F3E) + C4FM digital (System Fusion) <span class=&quot;small&quot;>(sysop info)</span>">Bi-mode : FM analogique (12K0F3E) + numérique C4FM (System Fusion) <span class="small">(info du sysop)</span></td></tr>
+        <tr><th>CTCSS / tone</th><td class="mono" data-en="{{CTCSS}} Hz <span class=&quot;small&quot;>(sysop info)</span>">{{CTCSS_FR}} Hz <span class="small">(info du sysop)</span></td></tr>
+        <tr><th data-en="Location">Localité</th><td data-en="{{REP_SITE_EN}}">{{REP_SITE_FR}}</td></tr>
+        <tr><th>Locator</th><td class="mono">{{REP_LOCATOR}}</td></tr>
+        <tr><th data-en="Site altitude / antenna height">Altitude du site / hauteur d'antenne</th><td>{{REP_ALT}}</td></tr>
+        <tr><th data-en="Antenna">Antenne</th><td data-en="Omnidirectional, vertical polarisation, 2.85 dBd">Omnidirectionnelle, polarisation verticale, 2,85 dBd</td></tr>
+        <tr><th data-en="Equipment">Équipement</th><td>{{REP_EQUIP}}</td></tr>
+        <tr><th data-en="Power">Puissance</th><td>{{REP_POWER}}</td></tr>
+        <tr><th data-en="Licence holder">Titulaire de licence</th><td>UBA</td></tr>
+      </table>
+      <p class="src" data-en="Technical data source (except CTCSS, power, mode and equipment, provided by the sysop): <a href=&quot;https://on0.be/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>on0.be</a> (<a href=&quot;https://on0.be/api/public/repeaters/{{REP_CALL}}&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>{{REP_CALL}} record</a>), accessed 11/10/2026. In case of discrepancy, the sysop's information prevails.">Source des caractéristiques techniques (sauf CTCSS, puissance, mode et équipement, communiqués par le sysop) : <a href="https://on0.be/" target="_blank" rel="noopener">on0.be</a> (<a href="https://on0.be/api/public/repeaters/{{REP_CALL}}" target="_blank" rel="noopener">fiche {{REP_CALL}}</a>), consultée le 11/10/2026. En cas de divergence, les informations du sysop font foi.</p>
+    </div>
+    <div class="glass card reveal calc">
+      <h3 data-en="🔧 Programming help">🔧 Aide à la programmation</h3>
+      <p class="small" data-en="Memory sheet ready to copy into your radio.">Fiche mémoire prête à recopier dans votre poste.</p>
+      <div class="out" id="progsheet">RX  {{REP_OUT}} MHz
+TX  {{REP_IN}} MHz
+Shift  −7.600 MHz (DUP −)
+CTCSS  {{CTCSS}} Hz (TX)
+Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
+      <button class="copy" id="copyprog" data-en="Copy the sheet">Copier la fiche</button>
+      <label for="offin" data-en="Shift calculator: output frequency (MHz)">Calculateur de shift : fréquence de sortie (MHz)</label>
+      <input id="offin" type="number" step="0.0125" value="{{REP_OUT}}" inputmode="decimal">
+      <label for="offsh">Shift (MHz)</label>
+      <select id="offsh"><option value="-7.6" selected data-en="−7.6 (UHF, Belgium)">−7,6 (UHF, Belgique)</option><option value="-0.6">−0,6 (VHF)</option><option value="1.6">+1,6</option><option value="0">Simplex</option></select>
+      <div class="out" id="offout" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="outils"><div class="wrap">
+  <h2 class="reveal"><span class="n">04 /</span><span data-en="Interactive tools">Outils interactifs</span></h2>
+  <p class="lead reveal" data-en="Small radio tools, computed directly in your browser (no data sent).">Petits outils radio, calculés directement dans votre navigateur (aucune donnée envoyée).</p>
+  <canvas id="waterfall" class="reveal" role="img" aria-label="Animation décorative : cascade spectrale façon SDR" data-en-aria-label="Decorative animation: SDR-style spectrum waterfall"></canvas>
+  <div class="wf-cap" aria-hidden="true"><span>14.000</span><span>14.175</span><span>14.350 MHz</span></div>
+  <div class="tools">
+    <div class="glass card reveal">
+      <h3>🌍 Locator Maidenhead</h3>
+      <p data-en="{{CALL}} station: <span class=&quot;big&quot;>{{LOCATOR}}</span>">Station {{CALL}} : <span class="big">{{LOCATOR}}</span></p>
+      <p class="small" id="mylatlon"></p>
+      <label for="loc" data-en="Your locator (4 or 6 characters)">Votre locator (4 ou 6 caractères)</label>
+      <div class="row2"><input id="loc" placeholder="ex. JN18EU" maxlength="8" autocomplete="off" spellcheck="false" data-en-placeholder="e.g. JN18EU"><button class="btn sm ghost" id="geoloc" type="button" data-en="📍 My position">📍 Ma position</button></div>
+      <div class="out" id="locout" aria-live="polite">Entrez un locator pour calculer distance et azimut.</div>
+    </div>
+    <div class="glass card reveal">
+      <h3><span data-en="🎵 CW (Morse) generator">🎵 Générateur CW (Morse)</span><span class="led" id="led" aria-hidden="true"></span></h3>
+      <label for="cwtxt" data-en="Text to send">Texte à transmettre</label>
+      <input id="cwtxt" value="CQ CQ DE {{CALL}} K" maxlength="120" autocomplete="off">
+      <div class="morse" id="cwcode" aria-live="polite"></div>
+      <div class="row2">
+        <div><label for="wpm"><span data-en="Speed:">Vitesse :</span> <span id="wpmv">18</span> <span data-en="wpm">mots/min</span></label><input id="wpm" type="range" min="5" max="40" value="18"></div>
+        <div><label for="tone"><span data-en="Pitch:">Tonalité :</span> <span id="tonev">600</span> Hz</label><input id="tone" type="range" min="400" max="1000" step="10" value="600"></div>
+      </div>
+      <div class="btns" style="justify-content:flex-start;margin-top:14px"><button class="btn sm" id="cwplay" type="button" data-en="▶ Play">▶ Écouter</button><button class="btn sm ghost" id="cwstop" type="button">■ Stop</button></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="qsl"><div class="wrap">
+  <h2 class="reveal"><span class="n">05 /</span>QSL</h2>
+  <div class="qslwrap reveal">
+    <button class="qslcard" id="qslcard" type="button" aria-pressed="false" aria-label="Carte QSL virtuelle : cliquer pour retourner" data-en-aria-label="Virtual QSL card: click to flip">
+      <span class="qsl-inner">
+        <span class="qsl-face qsl-front">
+          <span class="qsl-call">{{CALL}}</span>
+          <span class="qsl-sub" data-en="{{REGION_EN}} · {{LOCATOR}}">{{REGION_FR}} · {{LOCATOR}}</span>
+          <span class="qsl-waves" aria-hidden="true"></span>
+          <span class="qsl-grid"><span><i data-en="To radio">À la station</i><b id="qv-call">________</b></span><span><i>Date</i><b id="qv-date">__/__/____</b></span><span><i>UTC</i><b id="qv-utc">__:__</b></span><span><i>MHz</i><b id="qv-freq">______</b></span><span><i>Mode</i><b id="qv-mode">____</b></span><span><i>RST</i><b id="qv-rst">___</b></span></span>
+          <span class="qsl-flip small" data-en="↻ Click to flip">↻ Cliquez pour retourner</span>
+        </span>
+        <span class="qsl-face qsl-back">
+          <span class="qsl-title" data-en="✉️ QSL via the UBA bureau">✉️ QSL via bureau UBA</span>
+          <span class="qsl-text" data-en="QSL cards are exchanged via the UBA QSL bureau. Please send your card through your national QSL bureau.">Les cartes QSL sont échangées via le bureau QSL de l'UBA. Merci d'envoyer votre carte par l'intermédiaire de votre bureau QSL national.</span>
+          <span class="qsl-73">73 de {{CALL}}</span>
+        </span>
+      </span>
+    </button>
+  </div>
+  <form class="glass card reveal qslform" id="qslform" action="https://formsubmit.co/{{EMAIL}}" method="POST">
+    <h3 data-en="📻 Confirm a QSO — e-QSL request">📻 Confirmer un QSO — demande d'e-QSL</h3>
+    <p class="small" data-en="Fill in your QSO details: the card above updates live. Date and UTC time are filled in automatically (editable).">Remplissez les détails de votre QSO : la carte ci-dessus se met à jour en direct. La date et l'heure UTC sont remplies automatiquement (modifiables).</p>
+    <input type="hidden" name="_subject" id="qslsubj" value="QSL {{CALL}}">
+    <input type="hidden" name="_captcha" value="true">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="{{SITE_URL}}merci.html">
+    <input type="hidden" name="type" value="QSL">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="qrow">
+      <div><label for="q-call" data-en="Your callsign *">Votre indicatif *</label><input id="q-call" name="indicatif" required maxlength="15" pattern="[A-Za-z0-9/]{3,15}" autocapitalize="characters" spellcheck="false"></div>
+      <div><label for="q-name" data-en="Name">Nom</label><input id="q-name" name="nom" maxlength="60" autocomplete="name"></div>
+      <div><label for="q-qth" data-en="QTH / locator">QTH / locator</label><input id="q-qth" name="qth_locator" maxlength="60"></div>
+      <div><label for="q-email" data-en="E-mail (optional, for a reply)">E-mail (facultatif, pour réponse)</label><input id="q-email" type="email" name="email" autocomplete="email"></div>
+      <div><label for="q-date" data-en="Date (UTC)">Date (UTC)</label><input id="q-date" type="date" name="date_utc" required></div>
+      <div><label for="q-utc" data-en="Time (UTC)">Heure (UTC)</label><input id="q-utc" type="time" name="heure_utc" required></div>
+      <div><label for="q-freq" data-en="Band / frequency (MHz)">Bande / fréquence (MHz)</label><input id="q-freq" name="bande_frequence" maxlength="20" placeholder="14.200 / 20m"></div>
+      <div><label for="q-mode">Mode</label><select id="q-mode" name="mode"><option>SSB</option><option>FM</option><option>CW</option><option>C4FM</option><option>DMR</option><option>FT8</option><option>FT4</option><option>RTTY</option><option>AM</option><option data-en="Other">Autre</option></select></div>
+      <div><label for="q-rsts" data-en="RST sent">RST envoyé</label><input id="q-rsts" name="rst_envoye" maxlength="4" placeholder="59"></div>
+      <div><label for="q-rstr" data-en="RST received">RST reçu</label><input id="q-rstr" name="rst_recu" maxlength="4" placeholder="59"></div>
+    </div>
+    <label for="q-com" data-en="Comment">Commentaire</label><textarea id="q-com" name="commentaire" maxlength="1000"></textarea>
+    <p class="small" data-en="Your data is used only to confirm the QSO and, if you wish, to reply to you. See the <a href=&quot;mentions-legales.html#gdpr&quot;>legal notice</a>. Paper QSL: via the UBA bureau.">Vos données servent uniquement à confirmer le QSO et, si vous le souhaitez, à vous répondre. Voir les <a href="mentions-legales.html#rgpd">mentions légales</a>. QSL papier : via le bureau UBA.</p>
+    <button class="btn" type="submit" data-en="Send my QSL ➜">Envoyer ma QSL ➜</button>
+  </form>
+
+</div></section>
+
+<section id="liens"><div class="wrap">
+  <h2 class="reveal"><span class="n">06 /</span><span data-en="Useful links">Liens utiles</span></h2>
+  <div class="illu-wrap reveal" style="max-width:620px;margin-inline:auto"><svg class="illu" viewBox="0 0 600 300" role="img" aria-label="Illustration : globe stylisé avec arcs de propagation et ligne grise" data-en-aria-label="Illustration: stylised globe with propagation arcs and grey line" data-parallax=".05">
+<defs><clipPath id="gl"><circle cx="300" cy="150" r="130"/></clipPath><linearGradient id="nt" x1="0" x2="1"><stop offset="0" stop-color="#02040a" stop-opacity="0"/><stop offset=".45" stop-color="#02040a" stop-opacity=".1"/><stop offset=".55" stop-color="#02040a" stop-opacity=".75"/></linearGradient></defs>
+<circle cx="300" cy="150" r="130" fill="#0a1426" stroke="#2f7bff" stroke-width="1.5"/>
+<g clip-path="url(#gl)" class="st2"><ellipse cx="300" cy="150" rx="45" ry="130"/><ellipse cx="300" cy="150" rx="95" ry="130"/><path d="M170 150H430M180 95H420M180 205H420M210 50H390M210 250H390"/>
+<path d="M265 70q20-12 38 2l8 18-14 10-6 18-18-8-10-22zM230 120q30 8 40 30l-4 40-18 30-12-40zM330 90q40-6 70 14l10 30-30 6-20 22-24-20z" fill="#14305a" stroke="#4da3ff"/>
+<rect x="300" y="0" width="200" height="300" fill="url(#nt)"/></g>
+<circle class="fc pulse" cx="288" cy="86" r="5"/><text class="lbl" x="250" y="72">{{CALL}}</text>
+<path class="arc" d="M288 86Q200 -10 120 120"/><path class="arc" d="M288 86Q420 -20 500 110"/><path class="arc" d="M288 86Q360 260 440 250"/>
+<circle class="fi" cx="120" cy="120" r="3"/><circle class="fi" cx="500" cy="110" r="3"/><circle class="fi" cx="440" cy="250" r="3"/>
+<text class="lbl s" x="70" y="140">W/VE</text><text class="lbl s" x="505" y="130">JA</text><text class="lbl s" x="448" y="270">VK</text>
+<text class="lbl s" x="372" y="292" data-en="GREY LINE">LIGNE GRISE</text></svg></div>
+  <div class="grid">
+    <div class="glass card reveal"><h3 data-en="🇧🇪 Belgium">🇧🇪 Belgique</h3><ul class="links">
+      <li><a href="https://www.uba.be/fr" target="_blank" rel="noopener" data-en="UBA – Royal Belgian Amateur Radio Union">UBA – Union royale belge des amateurs-émetteurs</a></li>
+      <li><a href="{{CLUB_URL}}" target="_blank" rel="noopener" data-en="{{CLUB_EN}}">{{CLUB_FR}}</a></li>
+      <li><a href="https://on0.be/" target="_blank" rel="noopener" data-en="ON0.be – Belgian repeater list">ON0.be – liste des relais belges</a></li>
+      <li><a href="https://www.ibpt.be/" target="_blank" rel="noopener" data-en="BIPT / IBPT – Belgian telecom regulator">IBPT / BIPT – régulateur belge des télécoms</a></li>
+    </ul></div>
+    <div class="glass card reveal"><h3 data-en="📇 QSL &amp;amp; directories">📇 QSL &amp; annuaires</h3><ul class="links">
+      <li><a href="https://www.qrz.com/db/{{CALL}}" target="_blank" rel="noopener" data-en="{{CALL}} on QRZ.com">{{CALL}} sur QRZ.com</a></li>
+      <li><a href="https://lotw.arrl.org/" target="_blank" rel="noopener">LoTW – Logbook of The World</a></li>
+      <li><a href="https://www.eqsl.cc/" target="_blank" rel="noopener">eQSL.cc</a></li>
+      <li><a href="https://www.iaru-r1.org/" target="_blank" rel="noopener" data-en="IARU Region 1">IARU Région 1</a></li>
+    </ul></div>
+    <div class="glass card reveal"><h3>☀️ DX &amp; propagation</h3><ul class="links">
+      <li><a href="https://www.dxsummit.fi/" target="_blank" rel="noopener">DX Summit – DX cluster</a></li>
+      <li><a href="https://www.reversebeacon.net/" target="_blank" rel="noopener">Reverse Beacon Network</a></li>
+      <li><a href="https://pskreporter.info/pskmap.html" target="_blank" rel="noopener">PSK Reporter</a></li>
+      <li><a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener" data-en="HamQSL – solar data">HamQSL – données solaires</a></li>
+      <li><a href="https://www.voacap.com/" target="_blank" rel="noopener" data-en="VOACAP – propagation forecasts">VOACAP – prévisions de propagation</a></li>
+      <li><a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener" data-en="NOAA SWPC – space weather">NOAA SWPC – météo spatiale</a></li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section id="articles"><div class="wrap">
+  <h2 class="reveal"><span class="n">07 /</span><span>Articles</span></h2>
+  <p class="lead reveal" data-en="Educational articles on amateur radio digital modes.">Articles pédagogiques sur les modes numériques radioamateurs.</p>
+  <div class="articles">
+    <a class="glass card reveal acard" href="articles/aprs.html"><svg class="illu" style="margin:0" viewBox="0 0 600 340" aria-hidden="true" focusable="false">
+<path d="M120 120L190 80L250 95L300 60L360 70L420 60L470 110L520 130L500 190L520 240L460 260L430 300L360 280L300 250L230 240L170 200L110 180Z" fill="#0c1a33" stroke="#2f7bff" stroke-width="1.6"/>
+<g class="st2 flow"><path d="M180 150L300 130"/><path d="M300 130L420 120"/><path d="M300 130L330 210"/><path d="M330 210L450 220"/></g>
+<g><circle class="ring" cx="300" cy="130" r="60"/><circle class="ring d1" cx="330" cy="210" r="60"/><circle class="ring d2" cx="420" cy="120" r="60"/></g>
+<circle class="fc" cx="300" cy="130" r="6"/><circle class="fc" cx="420" cy="120" r="6"/><circle class="fc" cx="330" cy="210" r="6"/>
+<circle class="fi pulse" cx="180" cy="150" r="5"/><circle class="fi" cx="450" cy="220" r="5"/>
+<circle class="pkt" r="4"><animateMotion dur="5s" repeatCount="indefinite" path="M180 150L300 130L330 210L450 220"/></circle>
+<circle class="pkt" r="3.5"><animateMotion dur="4s" begin="1.5s" repeatCount="indefinite" path="M180 150L300 130L420 120"/></circle>
+<text class="lbl" x="120" y="170" data-en="MOBILE">MOBILE</text><text class="lbl" x="276" y="116">DIGI</text><text class="lbl" x="404" y="106">DIGI</text><text class="lbl" x="304" y="234">iGATE</text>
+<text class="lbl s" x="410" y="242">→ APRS-IS</text><text class="lbl s" x="30" y="325">144.800 MHz · AX.25 1200 bd AFSK · WIDE1-1,WIDE2-1</text></svg><h3 data-en="APRS: positions and messages over the air">APRS : positions et messages par radio</h3><p class="small" data-en="What APRS is, its history, how it works, 144.800 MHz in Europe, equipment and software to get started.">Ce qu'est l'APRS, son histoire, son fonctionnement, le 144,800 MHz en Europe, le matériel et les logiciels pour débuter.</p><span class="more" data-en="Read the article →">Lire l'article →</span></a>
+    <a class="glass card reveal acard" href="articles/packet-radio.html"><svg class="illu" style="margin:0" viewBox="0 0 600 260" aria-hidden="true" focusable="false">
+<g class="st"><rect x="30" y="100" width="90" height="56" rx="8"/><rect x="255" y="40" width="90" height="56" rx="8"/><rect x="255" y="164" width="90" height="56" rx="8"/><rect x="480" y="100" width="90" height="56" rx="8"/></g>
+<g class="st2 flow"><path d="M120 128L255 68"/><path d="M345 68L480 128"/><path d="M120 128L255 192"/><path d="M345 192L480 128"/><path d="M300 96V164"/></g>
+<text class="lbl" x="44" y="124">STATION</text><text class="lbl s" x="44" y="142">TNC · KISS</text><text class="lbl" x="276" y="64" data-en="NODE">NŒUD</text><text class="lbl s" x="268" y="82">LinBPQ</text><text class="lbl" x="268" y="188">DIGI</text><text class="lbl s" x="268" y="206">AX.25</text><text class="lbl" x="508" y="124">BBS</text><text class="lbl s" x="494" y="142">MAIL · NEWS</text>
+<g><rect class="pkt" x="-14" y="-6" width="28" height="12" rx="2"><animateMotion dur="4s" repeatCount="indefinite" path="M120 128L255 68L345 68L480 128"/></rect>
+<rect class="pkt" x="-14" y="-6" width="28" height="12" rx="2" opacity=".7"><animateMotion dur="5s" begin="2s" repeatCount="indefinite" path="M480 128L345 192L255 192L120 128"/></rect></g>
+<g class="lbl s"><text x="150" y="250">FLAG | DEST | SRC | DIGI | CTRL | PID | INFO | FCS | FLAG</text></g></svg><h3 data-en="Packet radio: AX.25, TNCs and nodes">Packet radio : AX.25, TNC et nœuds</h3><p class="small" data-en="From the first experiments in 1978 to Direwolf and LinBPQ: how packet radio works and how to try it.">Des premières expériences de 1978 à Direwolf et LinBPQ : comment fonctionne le packet radio et comment l'essayer.</p><span class="more" data-en="Read the article →">Lire l'article →</span></a>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2 class="reveal"><span class="n">08 /</span>Contact</h2>
+  <p class="lead reveal" data-en="A question, a signal report on the repeater, a QSL request? Write to me using this form.">Une question, un rapport d'écoute sur le relais, une demande de QSL ? Écrivez-moi via ce formulaire.</p>
+  <form class="glass card reveal" action="https://formsubmit.co/{{EMAIL}}" method="POST">
+    <input type="hidden" name="_subject" value="Nouveau message depuis le site {{CALL}}" data-en-value="New message from the {{CALL}} website">
+    <input type="hidden" name="_captcha" value="true">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="{{SITE_URL}}merci.html">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="row">
+      <div><label for="name" data-en="Name">Nom</label><input id="name" name="name" required autocomplete="name"></div>
+      <div><label for="callsign" data-en="Callsign (optional)">Indicatif (facultatif)</label><input id="callsign" name="indicatif"></div>
+    </div>
+    <label for="email">E-mail</label><input id="email" type="email" name="email" required autocomplete="email">
+    <label for="message">Message</label><textarea id="message" name="message" required></textarea>
+    <p class="small" data-en="Your data is used only to reply to you. See the <a href=&quot;mentions-legales.html#gdpr&quot;>legal notice</a>.">Vos données servent uniquement à vous répondre. Voir les <a href="mentions-legales.html#rgpd">mentions légales</a>.</p>
+    <button class="btn" type="submit" data-en="Send ➜">Envoyer ➜</button>
+  </form>
+  <p class="small reveal" data-en="Prefer your own e-mail? <a href=&quot;mailto:{{EMAIL}}?subject=Contact%20{{CALL}}&quot;>{{EMAIL}}</a>">Vous préférez votre messagerie ? <a href="mailto:{{EMAIL}}?subject=Contact%20{{CALL}}">{{EMAIL}}</a></p>
+</div></section>
+
+<section id="soutenir"><div class="wrap">
+  <h2 class="reveal"><span class="n">09 /</span><span data-en="Support">Soutenir</span></h2>
+  <div class="glass card reveal">
+    <p data-en="This website and my radio activities (including the upkeep of the {{REP_CALL}} repeater) are non-commercial. If you wish, you can give voluntary support via PayPal. A donation entitles you to nothing in return.">Ce site et mes activités radio (dont l'entretien du relais {{REP_CALL}}) sont non commerciaux. Si vous le souhaitez, vous pouvez apporter un soutien volontaire via PayPal. Un don ne donne droit à aucune contrepartie.</p>
+    <p><a class="btn" href="{{PAYPAL}}" target="_blank" rel="noopener" data-en="♥ Donate with PayPal">♥ Faire un don avec PayPal</a></p>
+    <p class="small" data-en="Payment is processed directly by PayPal, under its own terms.">Le paiement est traité directement par PayPal, selon ses propres conditions.</p>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="seventy" data-en="73 de {{CALL}}">73 de {{CALL}}</div>
+  <div>© <span id="yr">2026</span> {{CALL}} · <span data-en="Personal non-commercial website">Site personnel non commercial</span> · <span data-en="template by">modèle par</span> <a href="https://github.com/Krobru/site-radioamateur-template">ON5EE</a> · <a href="mentions-legales.html" data-en="Legal notice">Mentions légales</a> · <a href="partager.html" data-en="Share this website">Partager ce site</a></div>
+</div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js" defer></script>
+<script src="fun.js" defer></script>
+<script src="illu.js" defer></script>
+<canvas id="confetti" aria-hidden="true"></canvas>
+</body>
+</html>
