@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr-BE">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-en="Packet radio – {{CALL}}">Le packet radio – {{CALL}}</title>
+<meta name="description" content="Article pédagogique sur le packet radio : AX.25, TNC, nœuds, logiciels.">
+<meta name="theme-color" content="#05070d">
+<link rel="canonical" href="{{SITE_URL}}articles/packet-radio.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 54V22M20 54l12-32 12 32' stroke='%234da3ff' stroke-width='5' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../illu.css">
+</head>
+<body>
+<header class="nav"><div class="wrap"><a class="brand" href="../index.html">{{CALL}}</a><nav style="display:flex;align-items:center;gap:10px;position:static;transform:none;visibility:visible;background:none;border:0"><a href="../index.html#articles" data-en="← Back to articles">← Retour aux articles</a><button class="langbtn" type="button" data-setlang aria-label="English version" data-en-aria-label="Version française"><span class="lf">FR</span><span class="sep">/</span><span class="le">EN</span></button></nav></div></header>
+<main class="legal"><div class="wrap article">
+<div class="illu-wrap"><svg class="illu" viewBox="0 0 600 260" role="img" aria-label="Illustration : trames AX.25 circulant entre nœuds packet" data-en-aria-label="Illustration: AX.25 frames travelling between packet nodes">
+<g class="st"><rect x="30" y="100" width="90" height="56" rx="8"/><rect x="255" y="40" width="90" height="56" rx="8"/><rect x="255" y="164" width="90" height="56" rx="8"/><rect x="480" y="100" width="90" height="56" rx="8"/></g>
+<g class="st2 flow"><path d="M120 128L255 68"/><path d="M345 68L480 128"/><path d="M120 128L255 192"/><path d="M345 192L480 128"/><path d="M300 96V164"/></g>
+<text class="lbl" x="44" y="124">STATION</text><text class="lbl s" x="44" y="142">TNC · KISS</text><text class="lbl" x="276" y="64" data-en="NODE">NŒUD</text><text class="lbl s" x="268" y="82">LinBPQ</text><text class="lbl" x="268" y="188">DIGI</text><text class="lbl s" x="268" y="206">AX.25</text><text class="lbl" x="508" y="124">BBS</text><text class="lbl s" x="494" y="142">MAIL · NEWS</text>
+<g><rect class="pkt" x="-14" y="-6" width="28" height="12" rx="2"><animateMotion dur="4s" repeatCount="indefinite" path="M120 128L255 68L345 68L480 128"/></rect>
+<rect class="pkt" x="-14" y="-6" width="28" height="12" rx="2" opacity=".7"><animateMotion dur="5s" begin="2s" repeatCount="indefinite" path="M480 128L345 192L255 192L120 128"/></rect></g>
+<g class="lbl s"><text x="150" y="250">FLAG | DEST | SRC | DIGI | CTRL | PID | INFO | FCS | FLAG</text></g></svg></div>
+<div data-lang="fr" lang="fr-BE"><p class="meta">Article · {{CALL}} · octobre 2026</p>
+<h1>Le packet radio : AX.25, TNC et nœuds</h1>
+<p>Bien avant le Wi-Fi et la 4G, des radioamateurs échangeaient déjà des messages, des bulletins et des fichiers par radio, d'ordinateur à ordinateur. Le <strong>packet radio</strong> a été l'un des premiers réseaux de données sans fil accessibles au grand public technique, et il reste aujourd'hui un formidable terrain d'expérimentation.</p>
+<h2>Qu'est-ce que le packet radio ?</h2>
+<p>Le principe est de découper les données en <strong>paquets</strong>, chacun portant l'indicatif de l'expéditeur et du destinataire, ainsi qu'un code de contrôle d'erreur. Les paquets sont émis sur une fréquence partagée ; s'ils sont reçus sans erreur, ils sont acquittés, sinon ils sont réémis. On peut ainsi établir une véritable <strong>liaison connectée</strong> et fiable entre deux stations, directement ou en passant par des relais.</p>
+<h2>Un peu d'histoire</h2>
+<p>Les radioamateurs ont commencé à expérimenter le packet radio en <strong>1978</strong> au Canada : après avoir obtenu une autorisation des autorités, des membres du Montreal Amateur Radio Club (dont Robert Rouleau, VE2PY) ont transmis des données ASCII en VHF, tandis qu'un groupe de Vancouver développait lui aussi les premiers contrôleurs. Aux États-Unis, des associations comme la <strong>TAPR</strong> (Tucson Amateur Packet Radio) ont joué un rôle majeur : en 1983, la TAPR a proposé des kits de son TNC-1, puis le <strong>TNC-2</strong>, licencié à des fabricants commerciaux. Dès 1984 apparaissent les premiers <strong>BBS</strong> (serveurs de messagerie) en packet, et le réseau se développe dans le monde entier au cours des années 1980 et 1990.</p>
+<h2>Comment ça marche ?</h2>
+<p>Le protocole de liaison utilisé est l'<strong>AX.25</strong> (<em>Amateur X.25</em>), dérivé du protocole X.25 et adapté aux indicatifs radioamateurs. Une trame AX.25 contient notamment un fanion de début, l'adresse de destination, l'adresse source, d'éventuels relais (digipeaters), un champ de contrôle, l'identifiant de protocole, les données et un code de contrôle (FCS).</p>
+<ul>
+<li><strong>Le TNC</strong> (<em>Terminal Node Controller</em>) fait le lien entre l'ordinateur et la radio : il module et démodule le signal et gère le protocole AX.25. Les TNC des années 1980 et 1990 étaient des boîtiers complets ; aujourd'hui, le mode <strong>KISS</strong> permet de confier le protocole à l'ordinateur, et des TNC logiciels utilisent simplement la carte son.</li>
+<li><strong>Les vitesses</strong> : en VHF/UHF, on utilise presque exclusivement le 1200 bauds (tonalités AFSK Bell 202) et le 9600 bauds (modulation G3RUH) ; en HF, une variante à 300 bauds (Bell 103) était utilisée.</li>
+<li><strong>Les nœuds et BBS</strong> : des stations permanentes jouent le rôle de nœuds (routage entre stations et fréquences) et de serveurs de messagerie, avec des bulletins et du courrier.</li>
+</ul>
+<h2>Fréquences</h2>
+<p>En Belgique comme dans toute la Région 1 de l'IARU, le packet radio doit utiliser les <strong>segments prévus pour les modes numériques</strong> dans les plans de bande de l'IARU R1 (VHF, UHF et HF). L'activité locale varie fortement selon les régions : renseignez-vous auprès de votre section UBA et consultez le plan de bande en vigueur avant d'émettre. Évitez en particulier le 144,800 MHz, réservé à l'APRS.</p>
+<h2>Les logiciels</h2>
+<ul>
+<li><strong>Dire Wolf</strong> : TNC logiciel libre qui remplace les TNC matériels des années 1980 ; il fournit une interface KISS et peut servir de digipeater.</li>
+<li><strong>LinBPQ</strong> : version Linux du logiciel de nœud BPQ32 de John Wiseman (G8BPQ), qui permet de monter un nœud packet, un BBS et un chat.</li>
+<li><strong>Winlink</strong> : système mondial de messagerie par radio, très utilisé pour les communications d'urgence, qui peut notamment passer par le packet en VHF/UHF.</li>
+</ul>
+<h2>Le matériel</h2>
+<p>Pour débuter, un simple émetteur-récepteur FM VHF ou UHF suffit, relié à un ordinateur via une interface audio et un TNC logiciel comme Dire Wolf, ou à un TNC matériel. Certains postes intègrent un modem compatible : le Kenwood TH-D75, par exemple, dispose d'un TNC intégré en mode KISS (1200 et 9600 bps). Pour le 9600 bauds, la radio doit disposer d'une prise données adaptée.</p>
+<h2>Comment débuter ?</h2>
+<ol>
+<li>Renseignez-vous sur les nœuds et BBS actifs dans votre région (section UBA, radioamateurs locaux).</li>
+<li>Installez Dire Wolf sur un ordinateur (ou un Raspberry Pi), reliez-le à votre radio et configurez votre indicatif.</li>
+<li>Connectez-vous à un nœud voisin avec un logiciel terminal, explorez ses commandes, lisez les bulletins.</li>
+<li>Montez éventuellement votre propre nœud avec LinBPQ, ou essayez Winlink pour envoyer des e-mails par radio.</li>
+</ol>
+<h2>Note réglementaire (Belgique)</h2>
+<p class="note">L'émission en packet radio sur les bandes radioamateurs est réservée aux <strong>radioamateurs titulaires d'une licence</strong> délivrée par l'IBPT, dans le respect de leur licence et du plan de bande. Les contenus doivent rester conformes aux règles du service d'amateur (pas d'usage commercial, identification par l'indicatif).</p>
+</div>
+<div data-lang="en" lang="en"><p class="meta">Article · {{CALL}} · October 2026</p>
+<h1>Packet radio: AX.25, TNCs and nodes</h1>
+<p>Long before Wi-Fi and 4G, radio amateurs were already exchanging messages, bulletins and files by radio, computer to computer. <strong>Packet radio</strong> was one of the first wireless data networks open to technically-minded hobbyists, and it remains a great field for experimentation today.</p>
+<h2>What is packet radio?</h2>
+<p>The idea is to split data into <strong>packets</strong>, each carrying the sender's and recipient's callsigns plus an error-check code. Packets are sent on a shared frequency; if received without error they are acknowledged, otherwise they are resent. This makes it possible to set up a genuine, reliable <strong>connected link</strong> between two stations, directly or through relays.</p>
+<h2>A little history</h2>
+<p>Radio amateurs began experimenting with packet radio in <strong>1978</strong> in Canada: after obtaining government authorisation, members of the Montreal Amateur Radio Club (including Robert Rouleau, VE2PY) transmitted ASCII data on VHF, while a Vancouver group was also developing early controllers. In the United States, groups such as <strong>TAPR</strong> (Tucson Amateur Packet Radio) played a major role: in 1983 TAPR offered kits of its TNC-1, followed by the <strong>TNC-2</strong>, licensed to commercial manufacturers. By 1984 the first packet <strong>BBSs</strong> (bulletin board systems) appeared, and the network grew worldwide through the 1980s and 1990s.</p>
+<h2>How does it work?</h2>
+<p>The link protocol is <strong>AX.25</strong> (<em>Amateur X.25</em>), derived from X.25 and adapted to amateur callsigns. An AX.25 frame contains a start flag, destination address, source address, optional relays (digipeaters), a control field, a protocol identifier, the data and a frame check sequence (FCS).</p>
+<ul>
+<li><strong>The TNC</strong> (<em>Terminal Node Controller</em>) links the computer and the radio: it modulates and demodulates the signal and handles AX.25. The TNCs of the 1980s and 1990s were complete boxes; today <strong>KISS</strong> mode lets the computer handle the protocol, and software TNCs simply use the sound card.</li>
+<li><strong>Speeds</strong>: on VHF/UHF, 1200 baud (Bell 202 AFSK tones) and 9600 baud (G3RUH modulation) are used almost exclusively; on HF a 300 baud (Bell 103) variant was used.</li>
+<li><strong>Nodes and BBSs</strong>: permanent stations act as nodes (routing between stations and frequencies) and as message servers with bulletins and mail.</li>
+</ul>
+<h2>Frequencies</h2>
+<p>In Belgium, as throughout IARU Region 1, packet radio must use the <strong>segments set aside for digital modes</strong> in the IARU R1 band plans (VHF, UHF and HF). Local activity varies greatly by area: ask your UBA section and check the current band plan before transmitting. In particular, avoid 144.800 MHz, which is reserved for APRS.</p>
+<h2>Software</h2>
+<ul>
+<li><strong>Dire Wolf</strong>: free software TNC replacing the hardware TNCs of the 1980s; it provides a KISS interface and can act as a digipeater.</li>
+<li><strong>LinBPQ</strong>: the Linux version of John Wiseman's (G8BPQ) BPQ32 node software, for running a packet node, BBS and chat.</li>
+<li><strong>Winlink</strong>: worldwide radio e-mail system, widely used for emergency communications, which can run over VHF/UHF packet among other modes.</li>
+</ul>
+<h2>Equipment</h2>
+<p>To start, a simple VHF or UHF FM transceiver is enough, connected to a computer through an audio interface and a software TNC such as Dire Wolf, or to a hardware TNC. Some radios include a compatible modem: the Kenwood TH-D75, for example, has a built-in KISS TNC (1200 and 9600 bps). For 9600 baud, the radio needs a suitable data port.</p>
+<h2>How to get started</h2>
+<ol>
+<li>Find out which nodes and BBSs are active in your area (UBA section, local amateurs).</li>
+<li>Install Dire Wolf on a computer (or Raspberry Pi), connect it to your radio and set your callsign.</li>
+<li>Connect to a nearby node with a terminal program, explore its commands, read the bulletins.</li>
+<li>Possibly set up your own node with LinBPQ, or try Winlink to send e-mail by radio.</li>
+</ol>
+<h2>Regulatory note (Belgium)</h2>
+<p class="note">Transmitting packet radio on the amateur bands is reserved for <strong>licensed radio amateurs</strong> holding a BIPT licence, within the conditions of their licence and the band plan. Content must comply with the rules of the amateur service (no commercial use, identification by callsign).</p>
+</div>
+<h2 data-en="Sources">Sources</h2><ul class="src"><li><a href="https://en.wikipedia.org/wiki/Packet_radio" target="_blank" rel="noopener">Wikipedia – Packet radio</a></li><li><a href="https://en.wikipedia.org/wiki/AX.25" target="_blank" rel="noopener">Wikipedia – AX.25</a></li><li><a href="https://en.wikipedia.org/wiki/Terminal_node_controller" target="_blank" rel="noopener">Wikipedia – Terminal node controller</a></li><li><a href="https://www.iaru-r1.org/on-the-air/band-plans/" target="_blank" rel="noopener">IARU Région 1 – plans de bande / band plans</a></li><li><a href="https://github.com/wb2osz/direwolf" target="_blank" rel="noopener">Dire Wolf (WB2OSZ)</a></li><li><a href="https://www.cantab.net/users/john.wiseman/Documents/" target="_blank" rel="noopener">LinBPQ / BPQ32 – documentation G8BPQ</a></li><li><a href="https://winlink.org/" target="_blank" rel="noopener">Winlink</a></li><li><a href="https://www.kenwood.com/i/products/info/amateur/pdf/TH-D75AE_IDM.pdf" target="_blank" rel="noopener">Kenwood – TH-D75A/E Operating Tips (PDF)</a></li><li><a href="https://www.uba.be/fr" target="_blank" rel="noopener">UBA</a></li><li><a href="https://www.ibpt.be/" target="_blank" rel="noopener">IBPT / BIPT</a></li></ul><p><a class="btn ghost" href="../index.html#articles" data-en="← Back to articles">← Retour aux articles</a></p>
+</div></main>
+<footer><div class="wrap"><div class="seventy">73 de {{CALL}}</div><div><a href="../index.html" data-en="Home">Accueil</a> · <a href="../mentions-legales.html" data-en="Legal notice">Mentions légales</a></div></div></footer>
+<script src="../config.js"></script><script src="../i18n.js"></script><script src="../illu.js" defer></script>
+</body></html>

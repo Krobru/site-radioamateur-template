@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr-BE">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-en="APRS – {{CALL}}">L'APRS – {{CALL}}</title>
+<meta name="description" content="Article pédagogique sur l'APRS : histoire, fonctionnement, 144,800 MHz, matériel, logiciels.">
+<meta name="theme-color" content="#05070d">
+<link rel="canonical" href="{{SITE_URL}}articles/aprs.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 54V22M20 54l12-32 12 32' stroke='%234da3ff' stroke-width='5' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../illu.css">
+</head>
+<body>
+<header class="nav"><div class="wrap"><a class="brand" href="../index.html">{{CALL}}</a><nav style="display:flex;align-items:center;gap:10px;position:static;transform:none;visibility:visible;background:none;border:0"><a href="../index.html#articles" data-en="← Back to articles">← Retour aux articles</a><button class="langbtn" type="button" data-setlang aria-label="English version" data-en-aria-label="Version française"><span class="lf">FR</span><span class="sep">/</span><span class="le">EN</span></button></nav></div></header>
+<main class="legal"><div class="wrap article">
+<div class="illu-wrap"><svg class="illu" viewBox="0 0 600 340" role="img" aria-label="Illustration : carte stylisée de la Belgique avec paquets APRS relayés par des digipeaters" data-en-aria-label="Illustration: stylised map of Belgium with APRS packets relayed by digipeaters">
+<path d="M120 120L190 80L250 95L300 60L360 70L420 60L470 110L520 130L500 190L520 240L460 260L430 300L360 280L300 250L230 240L170 200L110 180Z" fill="#0c1a33" stroke="#2f7bff" stroke-width="1.6"/>
+<g class="st2 flow"><path d="M180 150L300 130"/><path d="M300 130L420 120"/><path d="M300 130L330 210"/><path d="M330 210L450 220"/></g>
+<g><circle class="ring" cx="300" cy="130" r="60"/><circle class="ring d1" cx="330" cy="210" r="60"/><circle class="ring d2" cx="420" cy="120" r="60"/></g>
+<circle class="fc" cx="300" cy="130" r="6"/><circle class="fc" cx="420" cy="120" r="6"/><circle class="fc" cx="330" cy="210" r="6"/>
+<circle class="fi pulse" cx="180" cy="150" r="5"/><circle class="fi" cx="450" cy="220" r="5"/>
+<circle class="pkt" r="4"><animateMotion dur="5s" repeatCount="indefinite" path="M180 150L300 130L330 210L450 220"/></circle>
+<circle class="pkt" r="3.5"><animateMotion dur="4s" begin="1.5s" repeatCount="indefinite" path="M180 150L300 130L420 120"/></circle>
+<text class="lbl" x="120" y="170" data-en="MOBILE">MOBILE</text><text class="lbl" x="276" y="116">DIGI</text><text class="lbl" x="404" y="106">DIGI</text><text class="lbl" x="304" y="234">iGATE</text>
+<text class="lbl s" x="410" y="242">→ APRS-IS</text><text class="lbl s" x="30" y="325">144.800 MHz · AX.25 1200 bd AFSK · WIDE1-1,WIDE2-1</text></svg></div>
+<div data-lang="fr" lang="fr-BE"><p class="meta">Article · {{CALL}} · octobre 2026</p>
+<h1>L'APRS : positions, messages et télémétrie par radio</h1>
+<p>Sur une carte en ligne, une petite icône de voiture se déplace le long d'une autoroute belge ; à côté, une station météo publie sa température et un radioamateur envoie un court message à un ami à vingt kilomètres. Tout cela passe par la radio, sur une seule fréquence VHF partagée. C'est l'<strong>APRS</strong>, l'<em>Automatic Packet Reporting System</em>.</p>
+<h2>Qu'est-ce que l'APRS ?</h2>
+<p>L'APRS est un système de communication numérique tactique : chaque station diffuse de petits paquets contenant sa position, un statut, un message ou des données (météo, télémétrie). Contrairement au packet radio « connecté », il n'y a pas de liaison établie entre deux stations : tout le monde émet en <strong>diffusion</strong> sur le même canal, et tout le monde écoute. Le résultat est une vue d'ensemble, en temps réel, de ce qui se passe localement.</p>
+<h2>Un peu d'histoire</h2>
+<p>L'APRS est l'œuvre de <strong>Bob Bruninga, WB4APR</strong>, ingénieur de recherche à l'Académie navale des États-Unis. Il en a réalisé un premier ancêtre sur un Apple II en 1982, puis une version plus aboutie en 1984 sur un VIC-20, utilisée pour suivre la position et l'état des chevaux lors d'une course d'endurance. Le système s'est ensuite développé à partir de la fin des années 1980 pour devenir le standard mondial que l'on connaît. Bob Bruninga en a assuré la promotion et l'évolution pendant des décennies.</p>
+<h2>Comment ça marche ?</h2>
+<p>Dans sa forme la plus répandue, l'APRS utilise le protocole <strong>AX.25</strong> en trames non numérotées (UI), modulées en <strong>AFSK 1200 bauds</strong> (tonalités Bell 202) dans une voie FM sur la bande des 2 m. Quelques éléments clés :</p>
+<ul>
+<li><strong>Les digipeaters</strong> : stations relais qui écoutent et réémettent les paquets selon un mécanisme de « stockage et retransmission ». Ils forment l'ossature du réseau radio.</li>
+<li><strong>Le chemin (path)</strong> : chaque paquet indique combien de sauts il peut faire. Pour une station mobile ou portable, le chemin recommandé est aujourd'hui <code>WIDE1-1,WIDE2-1</code> ; une station fixe bien placée peut souvent s'en passer. Un chemin trop long encombre inutilement la fréquence.</li>
+<li><strong>Les iGates</strong> : passerelles qui transmettent les paquets reçus vers le réseau Internet <strong>APRS-IS</strong>, ce qui permet de les visualiser sur des sites comme aprs.fi.</li>
+<li><strong>Les SSID</strong> : un suffixe après l'indicatif identifie le type de station, par convention par exemple <code>-7</code> pour un portatif et <code>-9</code> pour un mobile.</li>
+</ul>
+<h2>Fréquences en Europe et en Belgique</h2>
+<p>En Région 1 de l'IARU, dont fait partie la Belgique, la fréquence APRS commune est <strong>144,800 MHz</strong> (FM, 1200 bauds), conformément au plan de bande VHF de l'IARU R1. En Amérique du Nord, c'est 144,390 MHz : pensez à changer la fréquence si vous voyagez avec votre matériel. Certains équipements permettent aussi l'APRS à 9600 bauds, mais le 1200 bauds sur 144,800 MHz reste la norme pour être reçu par les digipeaters et iGates belges.</p>
+<h2>Le matériel</h2>
+<p>Il existe deux approches : un émetteur-récepteur avec APRS intégré, ou un poste FM classique relié à un TNC (matériel ou logiciel). Plusieurs postes de la station {{CALL}} intègrent l'APRS :</p>
+<table><tr><th>Poste</th><th>APRS</th></tr>
+<tr><td>Kenwood TH-D75</td><td>APRS intégré (Kenwood le décrit notamment comme digipeater autonome et messagerie)</td></tr>
+<tr><td>Yaesu FTM-300D</td><td>APRS 1200/9600 bps intégré, GPS intégré</td></tr>
+<tr><td>Yaesu FT5D</td><td>Modem AX.25 1200/9600 bps pour l'APRS (bande B), GPS intégré</td></tr></table>
+<p>Avec un GPS intégré, la position est mise à jour automatiquement ; la fonction <em>SmartBeaconing</em> adapte la fréquence des balises à la vitesse et aux changements de direction.</p>
+<h2>Les logiciels</h2>
+<ul>
+<li><strong>APRSdroid</strong> : application Android pour envoyer et recevoir des paquets APRS, via Internet (APRS-IS), un TNC Bluetooth ou un simple câble audio.</li>
+<li><strong>Dire Wolf</strong> : TNC logiciel libre (modem et protocole AX.25) qui transforme un ordinateur et sa carte son en digipeater, iGate ou station APRS complète.</li>
+<li><strong>aprs.fi</strong> : site de cartographie qui affiche en temps réel les stations reçues par le réseau APRS-IS.</li>
+</ul>
+<h2>Comment débuter ?</h2>
+<ol>
+<li>Commencez par écouter : réglez un récepteur sur 144,800 MHz et observez les paquets (ou consultez aprs.fi autour de chez vous).</li>
+<li>Configurez votre indicatif avec un SSID adapté, votre symbole (voiture, maison, randonneur…) et le chemin <code>WIDE1-1,WIDE2-1</code> si vous êtes mobile.</li>
+<li>Choisissez un intervalle de balise raisonnable (plusieurs minutes, ou SmartBeaconing) pour ne pas saturer la fréquence partagée.</li>
+<li>Vérifiez sur aprs.fi que votre position est bien relayée, puis essayez la messagerie avec un ami.</li>
+</ol>
+<h2>Note réglementaire (Belgique)</h2>
+<p class="note">L'émission en APRS sur les bandes radioamateurs est réservée aux <strong>radioamateurs titulaires d'une licence</strong> délivrée par l'IBPT, dans le respect des conditions de leur licence et du plan de bande. Écouter et consulter les cartes en ligne est en revanche accessible à tous. Les données APRS sont publiques : ne diffusez votre position que si vous le souhaitez.</p>
+</div>
+<div data-lang="en" lang="en"><p class="meta">Article · {{CALL}} · October 2026</p>
+<h1>APRS: positions, messages and telemetry over the air</h1>
+<p>On an online map, a small car icon moves along a Belgian motorway; nearby, a weather station publishes its temperature and a radio amateur sends a short message to a friend twenty kilometres away. All of this travels by radio, on a single shared VHF frequency. This is <strong>APRS</strong>, the <em>Automatic Packet Reporting System</em>.</p>
+<h2>What is APRS?</h2>
+<p>APRS is a tactical digital communication system: each station broadcasts small packets containing its position, a status, a message or data (weather, telemetry). Unlike "connected" packet radio, no link is set up between two stations: everyone transmits as a <strong>broadcast</strong> on the same channel, and everyone listens. The result is a real-time overview of what is happening locally.</p>
+<h2>A little history</h2>
+<p>APRS is the work of <strong>Bob Bruninga, WB4APR</strong>, a senior research engineer at the United States Naval Academy. He built an early ancestor on an Apple II in 1982, then a more advanced version in 1984 on a VIC-20, used to report the position and status of horses during an endurance ride. The system grew from the late 1980s onwards into the worldwide standard we know today, and Bob Bruninga promoted and developed it for decades.</p>
+<h2>How does it work?</h2>
+<p>In its most common form, APRS uses the <strong>AX.25</strong> protocol in unnumbered (UI) frames, modulated as <strong>1200 baud AFSK</strong> (Bell 202 tones) over an FM channel on the 2 m band. A few key elements:</p>
+<ul>
+<li><strong>Digipeaters</strong>: relay stations that listen and retransmit packets using store-and-forward. They are the backbone of the radio network.</li>
+<li><strong>The path</strong>: each packet says how many hops it may take. For mobile or portable stations the recommended path is now <code>WIDE1-1,WIDE2-1</code>; a well-placed fixed station can often do without. Overly long paths needlessly congest the frequency.</li>
+<li><strong>iGates</strong>: gateways forwarding received packets to the <strong>APRS-IS</strong> internet network, so they can be viewed on sites such as aprs.fi.</li>
+<li><strong>SSIDs</strong>: a suffix after the callsign identifies the station type, by convention e.g. <code>-7</code> for a handheld and <code>-9</code> for a mobile.</li>
+</ul>
+<h2>Frequencies in Europe and Belgium</h2>
+<p>In IARU Region 1, which includes Belgium, the common APRS frequency is <strong>144.800 MHz</strong> (FM, 1200 baud), as set out in the IARU R1 VHF band plan. In North America it is 144.390 MHz — remember to change it if you travel with your gear. Some equipment also supports 9600 baud APRS, but 1200 baud on 144.800 MHz remains the norm to be heard by Belgian digipeaters and iGates.</p>
+<h2>Equipment</h2>
+<p>There are two approaches: a transceiver with built-in APRS, or a standard FM radio connected to a TNC (hardware or software). Several radios at the {{CALL}} station have built-in APRS:</p>
+<table><tr><th>Radio</th><th>APRS</th></tr>
+<tr><td>Kenwood TH-D75</td><td>Built-in APRS (Kenwood notably describes standalone digipeater and messaging)</td></tr>
+<tr><td>Yaesu FTM-300D</td><td>Built-in 1200/9600 bps APRS, built-in GPS</td></tr>
+<tr><td>Yaesu FT5D</td><td>1200/9600 bps AX.25 modem for APRS (B band), built-in GPS</td></tr></table>
+<p>With a built-in GPS the position is updated automatically; <em>SmartBeaconing</em> adapts the beacon rate to speed and changes of direction.</p>
+<h2>Software</h2>
+<ul>
+<li><strong>APRSdroid</strong>: Android app to send and receive APRS packets via the internet (APRS-IS), a Bluetooth TNC or a simple audio cable.</li>
+<li><strong>Dire Wolf</strong>: free software TNC (modem and AX.25 protocol) turning a computer and its sound card into a digipeater, iGate or full APRS station.</li>
+<li><strong>aprs.fi</strong>: mapping site showing, in real time, the stations heard by the APRS-IS network.</li>
+</ul>
+<h2>How to get started</h2>
+<ol>
+<li>Start by listening: tune a receiver to 144.800 MHz and watch the packets (or check aprs.fi around your home).</li>
+<li>Set your callsign with a suitable SSID, your symbol (car, house, hiker…) and the path <code>WIDE1-1,WIDE2-1</code> if you are mobile.</li>
+<li>Choose a reasonable beacon interval (several minutes, or SmartBeaconing) so as not to saturate the shared frequency.</li>
+<li>Check on aprs.fi that your position is being relayed, then try messaging with a friend.</li>
+</ol>
+<h2>Regulatory note (Belgium)</h2>
+<p class="note">Transmitting APRS on the amateur bands is reserved for <strong>licensed radio amateurs</strong> holding a BIPT licence, within the conditions of their licence and the band plan. Listening and browsing online maps, however, is open to everyone. APRS data is public: only broadcast your position if you want to.</p>
+</div>
+<h2 data-en="Sources">Sources</h2><ul class="src"><li><a href="https://en.wikipedia.org/wiki/Automatic_Packet_Reporting_System" target="_blank" rel="noopener">Wikipedia – Automatic Packet Reporting System</a></li><li><a href="https://en.wikipedia.org/wiki/AX.25" target="_blank" rel="noopener">Wikipedia – AX.25</a></li><li><a href="https://www.iaru-r1.org/on-the-air/band-plans/" target="_blank" rel="noopener">IARU Région 1 – plans de bande / band plans</a></li><li><a href="https://www.kenwood.com/usa/com/amateur/th-d75a/" target="_blank" rel="noopener">Kenwood – TH-D75</a></li><li><a href="https://www.yaesu.com/jp/amateur_index/product/ftm-300d/detail.html" target="_blank" rel="noopener">Yaesu – FTM-300D</a></li><li><a href="https://yaesu.co.uk/ft-5de/" target="_blank" rel="noopener">Yaesu UK – FT5DE</a></li><li><a href="https://aprsdroid.org/" target="_blank" rel="noopener">APRSdroid</a></li><li><a href="https://github.com/wb2osz/direwolf" target="_blank" rel="noopener">Dire Wolf (WB2OSZ)</a></li><li><a href="https://aprs.fi/" target="_blank" rel="noopener">aprs.fi</a></li><li><a href="https://www.ibpt.be/" target="_blank" rel="noopener">IBPT / BIPT</a></li></ul><p><a class="btn ghost" href="../index.html#articles" data-en="← Back to articles">← Retour aux articles</a></p>
+</div></main>
+<footer><div class="wrap"><div class="seventy">73 de {{CALL}}</div><div><a href="../index.html" data-en="Home">Accueil</a> · <a href="../mentions-legales.html" data-en="Legal notice">Mentions légales</a></div></div></footer>
+<script src="../config.js"></script><script src="../i18n.js"></script><script src="../illu.js" defer></script>
+</body></html>
