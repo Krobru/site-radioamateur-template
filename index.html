@@ -23,6 +23,7 @@
     <li><a href="#station">Station</a></li>
     <li><a href="#relais" data-en="{{REP_CALL}} repeater">Relais {{REP_CALL}}</a></li>
     <li><a href="#outils" data-en="Tools">Outils</a></li>
+    <li><a href="#websdr">WebSDR</a></li>
     <li><a href="#qsl">QSL</a></li>
     <li><a href="#liens" data-en="Links">Liens</a></li>
     <li><a href="#articles">Articles</a></li>
@@ -60,7 +61,8 @@
           <div class="lcd-clocks">
             <span>UTC <b id="utc">--:--:--</b></span>
             <span><i data-en="BE">BE</i> <b id="local">--:--:--</b></span>
-            <span class="daynight" title="Position du soleil calculée pour {{LOCATOR}}" data-en-title="Sun position computed for {{LOCATOR}}"><b id="sunstate">…</b><span class="bar" aria-hidden="true"><i id="sunmark"></i></span><small id="suntimes"></small></span>
+            <span class="wx" title="Température actuelle à {{WX_LABEL}} (Open-Meteo)" data-en-title="Current temperature in {{WX_LABEL}} (Open-Meteo)">{{WX_LABEL}} <b id="wxtemp">—</b></span>
+            <span class="daynight" title="Hauteur du soleil calculée pour {{LOCATOR}}" data-en-title="Sun elevation computed for {{LOCATOR}}"><b id="sunstate">…</b><span class="bar" aria-hidden="true"><i id="sunmark"></i></span><small id="suntimes"></small></span>
           </div>
         </div>
         <div class="controls">
@@ -166,7 +168,7 @@ CTCSS  {{CTCSS}} Hz (TX)
 Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
       <button class="copy" id="copyprog" data-en="Copy the sheet">Copier la fiche</button>
       <label for="offin" data-en="Shift calculator: output frequency (MHz)">Calculateur de shift : fréquence de sortie (MHz)</label>
-      <input id="offin" type="number" step="0.0125" value="{{REP_OUT}}" inputmode="decimal">
+      <input id="offin" type="number" step="0.0125" inputmode="decimal">
       <label for="offsh">Shift (MHz)</label>
       <select id="offsh"><option value="-7.6" selected data-en="−7.6 (UHF, Belgium)">−7,6 (UHF, Belgique)</option><option value="-0.6">−0,6 (VHF)</option><option value="1.6">+1,6</option><option value="0">Simplex</option></select>
       <div class="out" id="offout" aria-live="polite"></div>
@@ -202,8 +204,29 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
   </div>
 </div></section>
 
+
+<section id="websdr"><div class="wrap">
+  <h2 class="reveal"><span class="n">05 /</span>WebSDR</h2>
+  <p class="lead reveal" data-en="A WebSDR is a real receiver connected to the Internet: you tune it from your browser, several listeners at once, with no software to install. Handy to hear yourself on the air, check propagation or test an antenna.">Un WebSDR est un vrai récepteur relié à Internet : on le règle depuis son navigateur, à plusieurs en même temps, sans rien installer. Pratique pour s'écouter soi-même à l'antenne, vérifier la propagation ou tester une antenne.</p>
+  <svg class="sdrsvg reveal" viewBox="0 0 600 120" role="img" aria-label="Animation décorative : antenne et cascade" data-en-aria-label="Decorative animation: antenna and waterfall">
+    <g stroke="#4da3ff" stroke-width="2" fill="none" stroke-linecap="round"><line x1="60" y1="110" x2="60" y2="30"/><line x1="40" y1="45" x2="80" y2="45"/><line x1="45" y1="60" x2="75" y2="60"/><line x1="60" y1="110" x2="40" y2="118"/><line x1="60" y1="110" x2="80" y2="118"/>
+    <path class="sw w1" d="M88 30 q12 15 0 30"/><path class="sw w2" d="M100 22 q20 23 0 46"/><path class="sw w3" d="M112 14 q28 31 0 62"/></g>
+    <rect x="160" y="10" width="420" height="100" rx="6" fill="#02060f" stroke="#1d3a66"/>
+    <g class="wfl"><rect x="200" y="10" width="6" height="100" fill="#2f7bff" opacity=".7"/><rect x="290" y="10" width="14" height="100" fill="#00c2ff" opacity=".55"/><rect x="380" y="10" width="4" height="100" fill="#4da3ff" opacity=".8"/><rect x="470" y="10" width="20" height="100" fill="#2f7bff" opacity=".4"/><rect x="540" y="10" width="5" height="100" fill="#00c2ff" opacity=".7"/></g>
+    <line class="sdrcur" x1="297" y1="10" x2="297" y2="110" stroke="#e6efff" stroke-width="1.5" stroke-dasharray="3 3"/>
+  </svg>
+  <div class="grid">
+    <a class="glass card reveal sdrlink" href="http://websdr.ewi.utwente.nl:8901/" target="_blank" rel="noopener noreferrer"><h3>Twente WebSDR (NL) <span aria-hidden="true">↗</span></h3><p data-en="The very first WebSDR (University of Twente, Enschede), all shortwave 0–29 MHz.">Le tout premier WebSDR (Université de Twente, Enschede), toutes les ondes courtes 0–29 MHz.</p></a>
+    <a class="glass card reveal sdrlink" href="http://websdr.heppen.be:8901/" target="_blank" rel="noopener noreferrer"><h3>Heppen WebSDR (BE) <span aria-hidden="true">↗</span></h3><p data-en="Wideband HF receiver in Heppen (Limburg) by ON5HB and ON3MS.">Récepteur HF large bande à Heppen (Limbourg) par ON5HB et ON3MS.</p></a>
+    <a class="glass card reveal sdrlink" href="https://on4pra.be/websdr.html" target="_blank" rel="noopener noreferrer"><h3>ON4PRA WebSDR (BE) <span aria-hidden="true">↗</span></h3><p data-en="The PRAC club WebSDR in Londerzeel: 2 m, 70 cm, QO-100 and HF, with DMR, D-STAR and C4FM decoding.">Le WebSDR du club PRAC à Londerzeel : 2 m, 70 cm, QO-100 et HF, avec décodage DMR, D-STAR et C4FM.</p></a>
+    <a class="glass card reveal sdrlink" href="http://www.websdr.org/" target="_blank" rel="noopener noreferrer"><h3>websdr.org <span aria-hidden="true">↗</span></h3><p data-en="The worldwide list of WebSDRs, with a map and band coverage.">La liste mondiale des WebSDR, avec la carte et les bandes couvertes.</p></a>
+    <a class="glass card reveal sdrlink" href="http://rx.kiwisdr.com/" target="_blank" rel="noopener noreferrer"><h3>KiwiSDR — carte <span aria-hidden="true">↗</span></h3><p data-en="Hundreds of KiwiSDR receivers worldwide.">Des centaines de récepteurs KiwiSDR dans le monde entier.</p></a>
+  </div>
+  <p class="small reveal" data-en="External sites, opened in a new tab. Some use plain HTTP and may be offline from time to time.">Sites externes, ouverts dans un nouvel onglet. Certains sont en HTTP simple et peuvent être hors ligne de temps en temps.</p>
+</div></section>
+
 <section id="qsl"><div class="wrap">
-  <h2 class="reveal"><span class="n">05 /</span>QSL</h2>
+  <h2 class="reveal"><span class="n">06 /</span>QSL</h2>
   <div class="qslwrap reveal">
     <button class="qslcard" id="qslcard" type="button" aria-pressed="false" aria-label="Carte QSL virtuelle : cliquer pour retourner" data-en-aria-label="Virtual QSL card: click to flip">
       <span class="qsl-inner">
@@ -230,12 +253,13 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_next" value="{{SITE_URL}}merci.html">
     <input type="hidden" name="type" value="QSL">
+    <input type="hidden" name="_autoresponse" value="{{AUTORESPONSE}}">
     <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="qrow">
-      <div><label for="q-call" data-en="Your callsign *">Votre indicatif *</label><input id="q-call" name="indicatif" required maxlength="15" pattern="[A-Za-z0-9/]{3,15}" autocapitalize="characters" spellcheck="false"></div>
+      <div><label for="q-call" data-en="Your callsign *">Votre indicatif *</label><input id="q-call" name="indicatif" required maxlength="15" pattern="[A-Za-z0-9\/]{3,15}" autocapitalize="characters" spellcheck="false"></div>
       <div><label for="q-name" data-en="Name">Nom</label><input id="q-name" name="nom" maxlength="60" autocomplete="name"></div>
       <div><label for="q-qth" data-en="QTH / locator">QTH / locator</label><input id="q-qth" name="qth_locator" maxlength="60"></div>
-      <div><label for="q-email" data-en="E-mail (optional, for a reply)">E-mail (facultatif, pour réponse)</label><input id="q-email" type="email" name="email" autocomplete="email"></div>
+      <div><label for="q-email" data-en="E-mail (optional, for an automatic confirmation)">E-mail (facultatif, pour une confirmation automatique)</label><input id="q-email" type="email" name="email" autocomplete="email"></div>
       <div><label for="q-date" data-en="Date (UTC)">Date (UTC)</label><input id="q-date" type="date" name="date_utc" required></div>
       <div><label for="q-utc" data-en="Time (UTC)">Heure (UTC)</label><input id="q-utc" type="time" name="heure_utc" required></div>
       <div><label for="q-freq" data-en="Band / frequency (MHz)">Bande / fréquence (MHz)</label><input id="q-freq" name="bande_frequence" maxlength="20" placeholder="14.200 / 20m"></div>
@@ -251,7 +275,7 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
 </div></section>
 
 <section id="liens"><div class="wrap">
-  <h2 class="reveal"><span class="n">06 /</span><span data-en="Useful links">Liens utiles</span></h2>
+  <h2 class="reveal"><span class="n">07 /</span><span data-en="Useful links">Liens utiles</span></h2>
   <div class="illu-wrap reveal" style="max-width:620px;margin-inline:auto"><svg class="illu" viewBox="0 0 600 300" role="img" aria-label="Illustration : globe stylisé avec arcs de propagation et ligne grise" data-en-aria-label="Illustration: stylised globe with propagation arcs and grey line" data-parallax=".05">
 <defs><clipPath id="gl"><circle cx="300" cy="150" r="130"/></clipPath><linearGradient id="nt" x1="0" x2="1"><stop offset="0" stop-color="#02040a" stop-opacity="0"/><stop offset=".45" stop-color="#02040a" stop-opacity=".1"/><stop offset=".55" stop-color="#02040a" stop-opacity=".75"/></linearGradient></defs>
 <circle cx="300" cy="150" r="130" fill="#0a1426" stroke="#2f7bff" stroke-width="1.5"/>
@@ -288,7 +312,7 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
 </div></section>
 
 <section id="articles"><div class="wrap">
-  <h2 class="reveal"><span class="n">07 /</span><span>Articles</span></h2>
+  <h2 class="reveal"><span class="n">08 /</span><span>Articles</span></h2>
   <p class="lead reveal" data-en="Educational articles on amateur radio digital modes.">Articles pédagogiques sur les modes numériques radioamateurs.</p>
   <div class="articles">
     <a class="glass card reveal acard" href="articles/aprs.html"><svg class="illu" style="margin:0" viewBox="0 0 600 340" aria-hidden="true" focusable="false">
@@ -312,7 +336,7 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
 </div></section>
 
 <section id="contact"><div class="wrap">
-  <h2 class="reveal"><span class="n">08 /</span>Contact</h2>
+  <h2 class="reveal"><span class="n">09 /</span>Contact</h2>
   <p class="lead reveal" data-en="A question, a signal report on the repeater, a QSL request? Write to me using this form.">Une question, un rapport d'écoute sur le relais, une demande de QSL ? Écrivez-moi via ce formulaire.</p>
   <form class="glass card reveal" action="https://formsubmit.co/{{EMAIL}}" method="POST">
     <input type="hidden" name="_subject" value="Nouveau message depuis le site {{CALL}}" data-en-value="New message from the {{CALL}} website">
@@ -333,7 +357,7 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
 </div></section>
 
 <section id="soutenir"><div class="wrap">
-  <h2 class="reveal"><span class="n">09 /</span><span data-en="Support">Soutenir</span></h2>
+  <h2 class="reveal"><span class="n">10 /</span><span data-en="Support">Soutenir</span></h2>
   <div class="glass card reveal">
     <p data-en="This website and my radio activities (including the upkeep of the {{REP_CALL}} repeater) are non-commercial. If you wish, you can give voluntary support via PayPal. A donation entitles you to nothing in return.">Ce site et mes activités radio (dont l'entretien du relais {{REP_CALL}}) sont non commerciaux. Si vous le souhaitez, vous pouvez apporter un soutien volontaire via PayPal. Un don ne donne droit à aucune contrepartie.</p>
     <p><a class="btn" href="{{PAYPAL}}" target="_blank" rel="noopener" data-en="♥ Donate with PayPal">♥ Faire un don avec PayPal</a></p>

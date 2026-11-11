@@ -1,4 +1,4 @@
-/* {{CALL}} — JS vanilla, aucune dépendance, aucun appel réseau */
+/* {{CALL}} — JS vanilla, aucune dépendance. La température au QTH (optionnelle) interroge Open-Meteo. */
 (function(){
 'use strict';
 var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
@@ -57,7 +57,7 @@ function tick(force){
   if(force===true||d.getSeconds()%10===0||!tick.done){
     var s=sun(d,HOME.lat,HOME.lon),st;
     if(s.el>6)st=L('☀️ Jour','☀️ Day');else if(s.el>-6)st=L('🌗 Ligne grise','🌗 Grey line');else st=L('🌙 Nuit','🌙 Night');
-    $('#sunstate').textContent=st+' · '+fr(s.el,1)+'°';
+    $('#sunstate').textContent=st+L(' · soleil à ',' · sun at ')+fr(s.el,1)+'°'+(s.el<0?L(" (sous l'horizon)",' (below horizon)'):'');
     if(s.rise!==null)$('#suntimes').textContent=L('Lever ','Sunrise ')+hm(s.rise)+L(' · Coucher ',' · Sunset ')+hm(s.set)+' UTC';
     var x=0.5+((s.mins-s.noon+2160)%1440-720)/1440;$('#sunmark').style.left=(Math.max(0,Math.min(1,x))*100)+'%';
     tick.done=true;
@@ -115,6 +115,7 @@ function offs(){
   if(isNaN(f)){o.textContent=L('Fréquence invalide.','Invalid frequency.');return}
   var tx=f+s;o.textContent='RX '+f.toFixed(4)+' MHz  →  TX '+tx.toFixed(4)+' MHz'+(s?'  (shift '+(s>0?'+':'−')+Math.abs(s).toFixed(3)+')':'  (simplex)');
 }
+if(window.CFG&&CFG.REP_OUT)$('#offin').value=CFG.REP_OUT;
 $('#offin').addEventListener('input',offs);$('#offsh').addEventListener('change',offs);offs();
 
 /* ---------- Locator / distance ---------- */
@@ -173,4 +174,21 @@ $$('.chip').forEach(function(c){c.addEventListener('click',function(){
   $$('#gear .card').forEach(function(card){var show=f==='all'||(' '+card.getAttribute('data-t')+' ').indexOf(' '+f+' ')>-1;card.classList.toggle('hide',!show);if(show)card.classList.add('in')});
 })});
 if(window.I18N)I18N.on(function(){tick(true);offs();mll();calcLoc();showCode();setMenu(menu.classList.contains('open'))});
+})();
+
+/* ---------- Température au QTH (Open-Meteo, sans clé, sans cookie) ---------- */
+(function(){
+  var el=document.getElementById('wxtemp');
+  var wrap=el&&el.closest?el.closest('.wx'):null;
+  var label=(window.CFG&&CFG.WX_LABEL)?String(CFG.WX_LABEL).trim():'';
+  if(!label){if(wrap)wrap.style.display='none';return;}
+  if(!el||!window.fetch)return;
+  var loc=(CFG.LOCATOR||'').trim().toUpperCase();
+  if(!/^[A-R]{2}[0-9]{2}([A-X]{2})?$/.test(loc)){if(wrap)wrap.style.display='none';return;}
+  var lon=(loc.charCodeAt(0)-65)*20-180+(+loc[2])*2, lat=(loc.charCodeAt(1)-65)*10-90+(+loc[3]);
+  if(loc.length===6){lon+=(loc.charCodeAt(4)-65)*5/60+2.5/60;lat+=(loc.charCodeAt(5)-65)*2.5/60+1.25/60}else{lon+=1;lat+=.5}
+  function wx(){fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat.toFixed(3)+'&longitude='+lon.toFixed(3)+'&current=temperature_2m',{credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store'})
+    .then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){var t=j&&j.current&&j.current.temperature_2m;if(typeof t!=='number'||!isFinite(t))throw 0;el.textContent=Math.round(t)+'\u00a0°C'})
+    .catch(function(){el.textContent='—'})}
+  wx();setInterval(wx,18e5);
 })();
