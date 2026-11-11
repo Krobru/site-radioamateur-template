@@ -92,6 +92,8 @@ set('qv-freq',g('q-freq').value.trim(),'______');set('qv-mode',g('q-mode').value
 g('qslsubj').value='QSL '+CFG.CALL+' de '+(c||'?')}
 g('q-date').addEventListener('input',function(){touched.d=1});g('q-utc').addEventListener('input',function(){touched.t=1});
 f.addEventListener('input',upd);f.addEventListener('change',upd);
+f.setAttribute('novalidate','');var msg=document.createElement('p');msg.className='small';msg.setAttribute('role','alert');msg.style.color='#ff8080';f.appendChild(msg);
+f.addEventListener('submit',function(e){g('q-call').value=g('q-call').value.toUpperCase().trim();var bad=f.querySelector(':invalid');if(bad){e.preventDefault();var en=document.documentElement.lang==='en';var lab=f.querySelector('label[for="'+bad.id+'"]');msg.textContent=(en?'Please check the field: ':'Vérifiez le champ : ')+(lab?lab.textContent.replace(' *',''):bad.name)+(en?' (callsign: letters, digits and / only).':' (indicatif : lettres, chiffres et / uniquement).');bad.focus();return}msg.textContent='';});
 f.addEventListener('submit',function(){g('q-call').value=g('q-call').value.toUpperCase().trim();upd()});
 now();setInterval(now,15000)})();
 /* Carte QSL */
@@ -102,7 +104,7 @@ document.addEventListener('keydown',function(e){
   var tg=e.target,tag=tg&&tg.tagName;if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||(tg&&tg.isContentEditable))return;
   if(e.key===kon[ki]||(kon[ki].length===1&&e.key.toLowerCase()===kon[ki])){ki++;if(ki===kon.length){ki=0;party()}}else ki=(e.key===kon[0])?1:0;
   if(tg===vfo)return;
-  if(e.key&&e.key.length===1){buf=(buf+e.key.toUpperCase()).slice(-2);if(buf==='CQ'){buf='';party()}}
+  if(e.key&&e.key.length===1){buf=(buf+e.key.toUpperCase()).slice(-2);if(buf==='CQ'){buf='';party();setTimeout(function(){var s=document.getElementById('qsl');if(s)s.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});var c=document.getElementById('q-call');if(c)setTimeout(function(){c.focus({preventScroll:true})},reduce?0:900)},reduce?0:1200)}}
 });
 function toast(t){var e=$('#toast');if(!e)return;e.textContent=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('show')},2600)}
 function party(){

@@ -10,6 +10,7 @@ window.CFG = {
   LOCATOR: "JO20AA",              // votre locator Maidenhead (6 caractères)
   REGION_FR: "Belgique · Province",
   REGION_EN: "Belgium · Province",
+  WX_LABEL: "QTH",                // nom affiché pour la température (ville ou région). "" pour la masquer
   EMAIL: "vous@example.com",      // adresse qui reçoit les formulaires (FormSubmit)
   DOMAIN: "votre-pseudo.github.io/votre-depot",   // nom de domaine ou adresse GitHub Pages
   SITE_URL: "https://votre-pseudo.github.io/votre-depot/",  // avec / final
@@ -48,6 +49,9 @@ window.CFG = {
   C.REP_OUT_FR = C.REP_OUT.replace('.', ',');
   C.REP_IN_FR = C.REP_IN.replace('.', ',');
   C.CTCSS_FR = C.CTCSS.replace('.', ',');
+  if (!C.AUTORESPONSE) {
+    C.AUTORESPONSE = "Merci pour votre demande de QSL ! Elle est bien reçue et je confirmerai notre QSO dès que possible. QSL papier via le bureau UBA. / Thank you for your QSL request! It has been received and I will confirm our QSO as soon as possible. Paper QSL via the UBA bureau. 73 de " + C.NAME + " " + C.CALL + " - " + C.SITE_URL;
+  }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   var g = document.getElementById('gear');
   if (g && C.STATION) {
