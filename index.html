@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="fun.css">
 <link rel="stylesheet" href="illu.css">
+<link rel="stylesheet" href="propagation.css">
 </head>
 <body>
 <a class="skip" href="#main" data-en="Skip to content">Aller au contenu</a>
@@ -21,6 +22,7 @@
   <nav id="menu" aria-label="Navigation principale" data-en-aria-label="Main navigation"><ul>
     <li><a href="#apropos" data-en="About">À propos</a></li>
     <li><a href="#station">Station</a></li>
+    <li><a href="#propagation" data-en="Propagation">Propagation</a></li>
     <li><a href="#relais" data-en="{{REP_CALL}} repeater">Relais {{REP_CALL}}</a></li>
     <li><a href="#outils" data-en="Tools">Outils</a></li>
     <li><a href="#websdr">WebSDR</a></li>
@@ -124,6 +126,17 @@
     <div class="glass fact"><b data-en="Bands">Bandes</b><span data-en="HF, VHF and UHF">HF, VHF et UHF</span></div>
     <div class="glass fact"><b>Modes</b><span data-en="FM and digital modes (C4FM, D-STAR, DMR)">FM et modes numériques (C4FM, D-STAR, DMR)</span></div>
     <div class="glass fact"><b>Locator</b><span class="mono">{{LOCATOR}}</span></div>
+  </div>
+  <div class="prop-panel glass reveal" id="propagation">
+    <div class="prop-head">
+      <h3 data-en="Open HF bands">Bandes HF ouvertes</h3>
+      <p class="prop-updated" id="prop-updated"></p>
+    </div>
+    <p class="prop-lead" data-en="Day and night conditions, updated hourly. Your browser only loads a file from this website — no third-party request.">Conditions de jour et de nuit, mises à jour toutes les heures. Votre navigateur ne charge qu'un fichier de ce site — aucune requête vers un tiers.</p>
+    <div id="prop-body">
+      <p class="prop-wait" data-en="Loading…">Chargement…</p>
+    </div>
+    <p class="prop-credit" data-en="Calculated band conditions: N0NBH (hamqsl.com). Solar indices: N0NBH / NOAA SWPC.">Conditions de bandes calculées par N0NBH (hamqsl.com). Indices solaires : N0NBH / NOAA SWPC.</p>
   </div>
 </div></section>
 
@@ -376,6 +389,7 @@ Mode  FM (12K0F3E) + C4FM (System Fusion)</div>
 <script src="app.js" defer></script>
 <script src="fun.js" defer></script>
 <script src="illu.js" defer></script>
+<script src="propagation.js" defer></script>
 <canvas id="confetti" aria-hidden="true"></canvas>
 </body>
 </html>

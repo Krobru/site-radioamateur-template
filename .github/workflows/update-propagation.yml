@@ -1,0 +1,64 @@
+# Hourly HF propagation update. Lives on the default branch so the
+# schedule can run. Commits propagation.json to the default branch
+# and, when it exists, to gh-pages. No push trigger: no update loop.
+name: Update HF propagation
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-propagation
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch public solar data
+        run: python3 scripts/update-propagation.py
+
+      - name: Commit propagation.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          FILE="$GITHUB_WORKSPACE/propagation.json"
+          test -f "$FILE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          commit_to() {
+            local branch="$1"
+            local work
+            work="$(mktemp -d)"
+            git fetch origin "$branch"
+            git worktree add --detach "$work" "origin/$branch"
+            cp "$FILE" "$work/propagation.json"
+            git -C "$work" add propagation.json
+            if git -C "$work" diff --staged --quiet; then
+              echo "No change on $branch"
+            else
+              git -C "$work" commit -m "chore: mise à jour des conditions de propagation"
+              git -C "$work" push origin "HEAD:refs/heads/$branch"
+              echo "Updated $branch"
+            fi
+            git worktree remove "$work" --force
+          }
+
+          DEFAULT_BRANCH="${GITHUB_REF_NAME}"
+          commit_to "$DEFAULT_BRANCH"
+
+          if [ "$(git ls-remote --heads origin gh-pages)" ] && [ "gh-pages" != "$DEFAULT_BRANCH" ]; then
+            commit_to gh-pages
+          fi
