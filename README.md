@@ -3,7 +3,7 @@
 Modèle de site personnel pour radioamateur ou club, issu du site de **ON5EE** (https://on5ee.be).
 Gratuit, sans publicité, **sans traceur ni cookie**, sans base de données, sans photo. Hébergement gratuit sur **GitHub Pages**.
 
-Contenu : page d'accueil façon transceiver rétro (VFO, S-mètre, PTT CW, easter egg « CQ » qui ouvre le formulaire QSL), bascule **FR/EN** (français par défaut), station, relais, outils (locator, Morse), liens **WebSDR**, température au QTH (Open-Meteo, d'après le locator), **carte QSL interactive + demande d'e-QSL** avec confirmation automatique bilingue, formulaire de contact, bouton de don PayPal, mentions légales, articles APRS et packet radio.
+Contenu : page d'accueil façon transceiver rétro (VFO, S-mètre, PTT CW, easter egg « CQ » qui ouvre le formulaire QSL), bascule **FR/EN** (français par défaut), station, relais, outils (locator, Morse), liens **WebSDR**, température au QTH (Open-Meteo, d'après le locator), tableau des **bandes HF ouvertes** (sans requête tierce depuis le navigateur), **carte QSL interactive + demande d'e-QSL** avec confirmation automatique bilingue, formulaire de contact, bouton de don PayPal, mentions légales, articles APRS et packet radio.
 
 > Toutes vos informations se trouvent dans **un seul fichier : `config.js`**. Pas besoin de savoir coder.
 
@@ -48,7 +48,18 @@ Les formulaires de contact et de QSL utilisent le service gratuit [FormSubmit](h
 
 > Si vous changez d'adresse e-mail plus tard, il faudra refaire cette activation.
 
-### 6. (Facultatif) Votre propre nom de domaine
+### 6. Activer le tableau de propagation (bandes ouvertes)
+Le site peut afficher les conditions HF (jour/nuit) ainsi que les indices SFI, SSN, A, K et X-ray, aux couleurs du thème, **sans aucun appel vers un autre site depuis le navigateur des visiteurs**. Un fichier `propagation.json` est mis à jour toutes les heures par GitHub Actions, à partir des données publiques de [N0NBH (hamqsl.com)](https://www.hamqsl.com/solar.html) et du [NOAA SWPC](https://www.swpc.noaa.gov/).
+
+1. Dans votre dépôt : **Settings → Actions → General**.
+2. Sous *Workflow permissions*, choisissez **Read and write permissions**, puis **Save**. Sans cela, le workflow ne pourra pas enregistrer le fichier.
+3. Onglet **Actions** du dépôt : acceptez les workflows s'il vous le demande (*I understand my workflows, go ahead and enable them*).
+4. Ouvrez le workflow **Update HF propagation**, puis cliquez sur **Run workflow** pour créer le premier `propagation.json` (ou laisser tourner la mise à jour horaire).
+5. Si vous publiez le site depuis une branche `gh-pages` (et non `main`), le workflow met aussi à jour `gh-pages` automatiquement, dès que cette branche existe.
+
+Sans cette activation, le tableau affiche simplement « Données indisponibles ».
+
+### 7. (Facultatif) Votre propre nom de domaine
 1. Achetez un domaine (OVH, Gandi, etc.), par ex. `on0xxx.be`.
 2. Dans **Settings → Pages → Custom domain**, entrez le domaine et enregistrez (GitHub crée un fichier `CNAME`).
 3. Chez votre registrar, dans la zone DNS :
@@ -58,8 +69,8 @@ Les formulaires de contact et de QSL utilisent le service gratuit [FormSubmit](h
 4. Attendez la propagation (de quelques minutes à quelques heures), puis cochez **Enforce HTTPS**.
 5. Mettez `SITE_URL` et `DOMAIN` à jour dans `config.js`, ainsi que l'URL dans `robots.txt` et `sitemap.xml`.
 
-### 7. Adapter les mentions légales ⚠️
-Ouvrez `mentions-legales.html` et **relisez-le entièrement** : vous devenez l'éditeur et le responsable du traitement des données (RGPD). Vérifiez le pays, les services utilisés (FormSubmit, PayPal, Open-Meteo), la source des données du relais (on0.be) et retirez ce qui ne vous concerne pas. Ce modèle n'est pas un avis juridique.
+### 8. Adapter les mentions légales ⚠️
+Ouvrez `mentions-legales.html` et **relisez-le entièrement** : vous devenez l'éditeur et le responsable du traitement des données (RGPD). Vérifiez le pays, les services utilisés (FormSubmit, PayPal, Open-Meteo, et le tableau de propagation alimenté par N0NBH / NOAA via GitHub Actions), la source des données du relais (on0.be) et retirez ce qui ne vous concerne pas. Ce modèle n'est pas un avis juridique.
 
 ---
 
@@ -67,6 +78,7 @@ Ouvrez `mentions-legales.html` et **relisez-le entièrement** : vous devenez l'�
 - **Pas de photo** incluse ; si vous en ajoutez, utilisez uniquement vos propres images.
 - La langue choisie par le visiteur est mémorisée en `localStorage` (pas de cookie).
 - La température interroge le service public Open-Meteo : ce n'est pas un traceur, mais l'adresse IP du visiteur lui est techniquement transmise. Pour désactiver cette fonction, mettez `WX_LABEL: ""`.
+- Le tableau de propagation ne contacte aucun tiers depuis le navigateur : il lit `propagation.json` sur ce site. Voir la section 6 pour activer la mise à jour horaire.
 - En tapant **CQ** au clavier (hors d'un champ de formulaire), la surprise s'affiche puis la page descend vers le formulaire QSL. Le code Konami (↑ ↑ ↓ ↓ ← → ← → B A) n'affiche que la surprise.
 - L'émission sur les bandes amateurs reste soumise à votre licence (IBPT en Belgique).
 - Langue : textes FR dans le HTML, traduction EN dans les attributs `data-en="..."`.
@@ -78,4 +90,4 @@ Les textes des articles sont fournis tels quels ; vérifiez-les et adaptez-les.
 ---
 
 ## English (short)
-Free ham radio website template (FR/EN, no trackers/cookies). Click **Use this template**, edit **`config.js`** on github.com, enable **Settings → Pages** (branch `main`, root), send one message through the form and confirm FormSubmit’s **Activate Form** e-mail. QSL visitors who leave an e-mail receive a bilingual automatic confirmation built from your name, callsign and site URL. Optional: add a custom domain (A records to GitHub Pages IPs, `www` CNAME) and update `robots.txt` / `sitemap.xml`. **Review the legal notice** (`mentions-legales.html`). MIT licence — please keep the “template by ON5EE” credit.
+Free ham radio website template (FR/EN, no trackers/cookies). Click **Use this template**, edit **`config.js`** on github.com, enable **Settings → Pages** (branch `main`, root), send one message through the form and confirm FormSubmit’s **Activate Form** e-mail. For the HF band-conditions panel, set **Settings → Actions → General** to **Read and write permissions**, then run the **Update HF propagation** workflow once. QSL visitors who leave an e-mail receive a bilingual automatic confirmation built from your name, callsign and site URL. Optional: add a custom domain (A records to GitHub Pages IPs, `www` CNAME) and update `robots.txt` / `sitemap.xml`. **Review the legal notice** (`mentions-legales.html`). MIT licence — please keep the “template by ON5EE” credit.
