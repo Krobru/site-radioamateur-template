@@ -1,11 +1,11 @@
 {
-  "updated": "2026-11-15T08:20:00Z",
+  "updated": "2026-11-15T09:16:00Z",
   "source": "N0NBH / NOAA SWPC",
   "sfi": 124,
   "ssn": 96,
   "aindex": 4,
   "kindex": 1,
-  "xray": "B5.5",
+  "xray": "B5.2",
   "bands": {
     "80m-40m": {
       "day": "fair",
