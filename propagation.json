@@ -1,10 +1,27 @@
 {
-  "updated": "2026-11-18T20:00:00Z",
-  "source": "NOAA SWPC",
+  "updated": "2026-11-18T22:18:00Z",
+  "source": "N0NBH / NOAA SWPC",
   "sfi": 118,
-  "ssn": 61.71,
-  "aindex": 5,
-  "kindex": 1.33,
-  "xray": "C1.1",
-  "bands": {}
+  "ssn": 148,
+  "aindex": 14,
+  "kindex": 1,
+  "xray": "B8.8",
+  "bands": {
+    "80m-40m": {
+      "day": "fair",
+      "night": "good"
+    },
+    "30m-20m": {
+      "day": "good",
+      "night": "good"
+    },
+    "17m-15m": {
+      "day": "fair",
+      "night": "fair"
+    },
+    "12m-10m": {
+      "day": "poor",
+      "night": "poor"
+    }
+  }
 }
